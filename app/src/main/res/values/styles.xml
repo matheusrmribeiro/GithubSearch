@@ -13,4 +13,15 @@
         <item name="android:textColor">@color/secondary_text_color</item>
     </style>
 
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="queryBackground">@drawable/search_view_background</item>
+        <item name="submitBackground">@drawable/search_view_background</item>
+        <item name="searchIcon">@drawable/ic_search</item>
+        <item name="closeIcon">@drawable/ic_close</item>
+        <item name="editTextColor">@color/primary_text_color</item>
+        <item name="android:textColorPrimary">@color/primary_text_color</item>
+        <item name="android:textColor">@color/primary_text_color</item>
+        <item name="android:editTextColor">@color/primary_text_color</item>
+    </style>
+
 </resources>

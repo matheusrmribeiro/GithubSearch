@@ -10,11 +10,18 @@ class UsersRemoteDataSourceImpl @Inject constructor(
     private val usersService: IUsersApiService
 ) : IUsersRemoteDataSource {
     override suspend fun getUsers(query: String?): ResponseWrapper<List<UserResponse>> {
-        return doRequest {
-            if (query == null) {
+        return if (query == null) {
+            doRequest {
                 usersService.getAllUsers()
-            } else
-                usersService.getSearchUsers(query)
+            }
+        } else {
+            when (val response = doRequest { usersService.getSearchUsers(query) }) {
+                is ResponseWrapper.Error -> ResponseWrapper.Error(0)
+
+                is ResponseWrapper.Success -> {
+                    ResponseWrapper.Success(response.result?.items ?: listOf())
+                }
+            }
         }
     }
 

@@ -7,5 +7,7 @@
 
     <string name="data_fetching_error">Falha ao carregar os dados.</string>
     <string name="users_search_not_found">Nenhum usuário encontrado.</string>
+    <string name="users_search_hint">Buscar pelo @ de algum usário</string>
+    <string name="search">Buscar</string>
 
 </resources>

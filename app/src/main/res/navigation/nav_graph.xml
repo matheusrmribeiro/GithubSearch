@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/UsersFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
+        android:id="@+id/UsersFragment"
         android:name="com.example.githubsearch.features.users.presentation.UsersFragment"
         tools:layout="@layout/fragment_users">
 

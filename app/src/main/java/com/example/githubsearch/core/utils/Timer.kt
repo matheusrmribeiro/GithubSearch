@@ -18,24 +18,20 @@ class Timer(private val dispatcher: CoroutineDispatcher = Dispatchers.Main) {
     /**
      * Schedule a timer
      * @param interval: timer interval
-     * @param repeat: timer should repeat or execute one time
      * @param task: completition callback when timer completes
      */
     fun schedule(
         interval: Long,
-        repeat: Boolean = false,
         task: (() -> Unit),
         onError: (() -> Unit)? = null
     ) {
         invalidate()
         timerJob = CoroutineScope(dispatcher).launch {
-            while (repeat) {
-                delay(interval)
-                try {
-                    task()
-                } catch (e: Exception) {
-                    onError?.invoke()
-                }
+            delay(interval)
+            try {
+                task()
+            } catch (e: Exception) {
+                onError?.invoke()
             }
         }
         timerJob?.start()
