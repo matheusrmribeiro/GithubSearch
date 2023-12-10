@@ -32,7 +32,6 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    @Named("CoreRetrofit")
     fun provideCoreRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(client)

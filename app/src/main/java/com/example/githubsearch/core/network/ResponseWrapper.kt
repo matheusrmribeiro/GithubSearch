@@ -2,7 +2,7 @@ package com.example.githubsearch.core.network
 
 sealed class ResponseWrapper<T>(
     val result: T? = null,
-    val message: String? = null,
+    val message: Int? = null,
     val status: Int? = null
 ) {
     class Success<T>(result: T, status: Int? = null) : ResponseWrapper<T>(
@@ -11,7 +11,7 @@ sealed class ResponseWrapper<T>(
     )
 
     class Error<T>(
-        message: String,
+        message: Int,
         data: T? = null,
         status: Int? = null
     ) : ResponseWrapper<T>(data, message, status)

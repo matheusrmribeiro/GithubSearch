@@ -12,8 +12,8 @@ suspend fun <T> doRequest(call: suspend () -> Response<@JvmSuppressWildcards T>)
             if (response.isSuccessful)
                 ResponseWrapper.Success<@JvmSuppressWildcards T>(response.body()!!)
             else
-                ResponseWrapper.Error("")
+                ResponseWrapper.Error(0)
         } catch (e: Exception) {
-            ResponseWrapper.Error("")
+            ResponseWrapper.Error(0)
         }
     }

@@ -8,7 +8,6 @@
     <fragment
         android:id="@+id/FirstFragment"
         android:name="com.example.githubsearch.features.users.presentation.UsersFragment"
-        android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_users">
 
     </fragment>

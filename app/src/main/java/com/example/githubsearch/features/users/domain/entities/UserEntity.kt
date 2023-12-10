@@ -15,5 +15,8 @@ class UserEntity(
             picture = response.avatar_url,
             bio = response.bio,
         )
+
+        fun mapper(response: List<UserResponse>) = response.map { mapper(it) }
+
     }
 }
