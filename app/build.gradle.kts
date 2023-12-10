@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.githubsearch"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -57,6 +57,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
+    implementation("io.coil-kt:coil:2.5.0")
     kapt("com.google.dagger:hilt-android-compiler:2.49")
     implementation("com.google.dagger:hilt-android:2.49")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")

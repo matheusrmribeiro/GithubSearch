@@ -7,12 +7,9 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.example.githubsearch.features.users.UsersFragment"
+        android:name="com.example.githubsearch.features.users.presentation.UsersFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_users">
 
-        <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
     </fragment>
 </navigation>

@@ -44,4 +44,5 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="search_button">Search button</string>
+    <string name="profile_picture">Profile picture</string>
 </resources>

@@ -7,10 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
-import com.example.githubsearch.R
-import com.example.githubsearch.databinding.FragmentFirstBinding
 
 abstract class BaseFragment<VB: ViewBinding> : Fragment() {
 
