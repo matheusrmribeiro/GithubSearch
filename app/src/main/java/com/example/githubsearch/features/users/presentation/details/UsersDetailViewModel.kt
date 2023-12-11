@@ -17,7 +17,7 @@ class UsersDetailViewModel @Inject constructor(
 
     lateinit var userName: String
 
-    fun fetchUsersByUserName() = flow {
+    fun fetchUserByUserName() = flow {
         when (val response = usersRepository.getUserByUserName(userName)) {
             is ResponseWrapper.Success -> emit(ViewState.Success(response.result))
             is ResponseWrapper.Error -> emit(ViewState.Error("", response.message))
@@ -25,5 +25,15 @@ class UsersDetailViewModel @Inject constructor(
     }
         .onStart { emit(ViewState.Loading) }
         .asLiveData()
+
+    fun fetchUserRepository() = flow {
+        when (val response = usersRepository.getUserRepositories(userName)) {
+            is ResponseWrapper.Success -> emit(ViewState.Success(response.result))
+            is ResponseWrapper.Error -> emit(ViewState.Error("", response.message))
+        }
+    }
+        .onStart { emit(ViewState.Loading) }
+        .asLiveData()
+
 
 }

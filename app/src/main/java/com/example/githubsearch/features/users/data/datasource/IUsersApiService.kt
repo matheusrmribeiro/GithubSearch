@@ -1,5 +1,6 @@
 package com.example.githubsearch.features.users.data.datasource
 
+import com.example.githubsearch.features.users.data.models.UserRepositoryResponse
 import com.example.githubsearch.features.users.data.models.UserBasicResponse
 import com.example.githubsearch.features.users.data.models.UserCompleteResponse
 import com.example.githubsearch.features.users.data.models.UserSearchResponse
@@ -22,4 +23,10 @@ interface IUsersApiService {
     suspend fun getUserByUserName(
         @Path("userName") userName: String
     ): Response<UserCompleteResponse>
+
+    @GET("users/{userName}/repos")
+    suspend fun getUserRepositories(
+        @Path("userName") userName: String
+    ): Response<List<UserRepositoryResponse>>
+
 }

@@ -70,6 +70,9 @@ dependencies {
     implementation("com.github.e-nicolas:GenericAdapter:v1.0.9")
     implementation("com.ericktijerou.koleton:koleton:1.0.0-beta01")
     implementation("com.facebook.shimmer:shimmer:0.5.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    // Coroutine Lifecycle Scopes
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

@@ -10,11 +10,13 @@ import coil.load
 import com.example.githubsearch.R
 import com.example.githubsearch.core.base.BaseFragment
 import com.example.githubsearch.core.utils.ViewState
+import com.example.githubsearch.core.utils.parseHtml
 import com.example.githubsearch.databinding.FragmentUsersDetailBinding
-import com.example.githubsearch.databinding.RecyclerViewCellUsersBinding
+import com.example.githubsearch.databinding.RecyclerViewCellRepositoryBinding
 import com.example.githubsearch.features.users.domain.entities.UserBasicEntity
 import com.example.githubsearch.features.users.domain.entities.UserCompleteEntity
-import com.example.githubsearch.features.users.presentation.listing.cell.UserCell
+import com.example.githubsearch.features.users.domain.entities.UserRepositoryEntity
+import com.example.githubsearch.features.users.presentation.details.cell.RepositoryCell
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.enicolas.genericadapter.AdapterHolderType
 import io.github.enicolas.genericadapter.adapter.GenericRecyclerAdapter
@@ -34,6 +36,7 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
      */
     private val viewModel: UsersDetailViewModel by viewModels()
     private val args: UsersDetailFragmentArgs by navArgs()
+    private var loadingController: Int = 0
 
     /**
      * Adapters
@@ -55,19 +58,6 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
             }
         }))
 
-    /**
-     * Functions
-     */
-    override fun setupFragment() {
-        viewModel.userName = args.userName
-        setupButtons()
-        fetchData()
-    }
-
-
-    private fun setupButtons() {
-
-    }
 
 
     private val recyclerViewDelegate = object : GenericRecylerAdapterDelegate {
@@ -80,8 +70,8 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
             cell: RecyclerView.ViewHolder,
             position: Int
         ) {
-            getSnapshotItem<UserBasicEntity>(adapter, position)?.let { item ->
-                (cell as? UserCell)?.set(user = item)
+            getSnapshotItem<UserRepositoryEntity>(adapter, position)?.let { item ->
+                (cell as? RepositoryCell)?.set(repository = item)
             }
         }
 
@@ -90,25 +80,50 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
             position: Int
         ): AdapterHolderType {
             return AdapterHolderType(
-                RecyclerViewCellUsersBinding::class.java,
-                UserCell::class.java,
+                RecyclerViewCellRepositoryBinding::class.java,
+                RepositoryCell::class.java,
                 0
             )
         }
 
         override fun didSelectItemAtIndex(adapter: GenericRecyclerAdapter, index: Int) {
-            getSnapshotItem<UserBasicEntity>(adapter, index)?.let { item ->
+            getSnapshotItem<UserRepositoryEntity>(adapter, index)?.let { item ->
 
             }
         }
     }
 
+    /**
+     * Functions
+     */
+    override fun setupFragment() {
+        viewModel.userName = args.userName
+        setupRecycler()
+        fetchData()
+    }
+
+    private fun setupRecycler() {
+        genericRecyclerAdapter.delegate = recyclerViewDelegate
+        binding.rcvRepositories.apply {
+            adapter = genericRecyclerAdapter
+            itemAnimator = null
+        }
+    }
+
     private fun fetchData() {
-        viewModel.fetchUsersByUserName().observe { viewState ->
+        onRequestLoading()
+        viewModel.fetchUserByUserName().observe { viewState ->
             when (viewState) {
                 is ViewState.Error -> onRequestError(viewState)
                 is ViewState.Loading -> onRequestLoading()
-                is ViewState.Success -> onRequestSuccess(viewState)
+                is ViewState.Success -> onRequestUserSuccess(viewState)
+            }
+        }
+        viewModel.fetchUserRepository().observe { viewState ->
+            when (viewState) {
+                is ViewState.Error -> onRequestError(viewState)
+                is ViewState.Loading -> onRequestLoading()
+                is ViewState.Success -> onRequestRepositorySuccess(viewState)
             }
         }
     }
@@ -122,9 +137,14 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
         startLoading()
     }
 
-    private fun onRequestSuccess(viewState: ViewState.Success<UserCompleteEntity?>) {
+    private fun onRequestUserSuccess(viewState: ViewState.Success<UserCompleteEntity?>) {
         endLoading()
-        setupData(viewState.result)
+        setupUserInfo(viewState.result)
+    }
+
+    private fun onRequestRepositorySuccess(viewState: ViewState.Success<List<UserRepositoryEntity>?>) {
+        endLoading()
+        setupRepositoryInfo(viewState.result)
     }
 
     private fun configureEmptyMessage(showMessage: Boolean) {
@@ -135,7 +155,7 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
 
     }
 
-    private fun setupData(data: UserCompleteEntity?) {
+    private fun setupUserInfo(data: UserCompleteEntity?) {
         data?.let {
             binding.txtName.text = data.name
             binding.txtUserBio.text = data.bio
@@ -143,13 +163,20 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
                 error(R.drawable.ic_user)
             }
             binding.txtUserName.text =
-                resources.getString(R.string.users_detail_user_name, data.userName)
+                resources.getString(R.string.users_detail_user_name, data.userName).parseHtml()
             binding.txtFollowers.text =
-                resources.getString(R.string.users_detail_follower, data.followers.toString())
+                resources.getString(R.string.users_detail_follower, data.followers.toString()).parseHtml()
             binding.txtFollowing.text =
-                resources.getString(R.string.users_detail_following, data.following.toString())
+                resources.getString(R.string.users_detail_following, data.following.toString()).parseHtml()
         }
     }
+
+    private fun setupRepositoryInfo(data: List<UserRepositoryEntity>?) {
+        data?.let {
+            genericRecyclerAdapter.snapshot?.snapshotList = data
+        }
+    }
+
     /**
      * Auxiliary functions
      */
@@ -158,25 +185,31 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
     }
 
     private fun startLoading() {
-        binding.ctlUserInfo.loadSkeleton {
-            shimmer(true)
+        if (loadingController == 0) {
+            loadingController++
+            binding.ctlUserInfo.loadSkeleton {
+                shimmer(true)
+            }
+            binding.imgPicture.loadSkeleton()
+            binding.txtName.loadSkeleton(length = 25)
+            binding.txtUserName.loadSkeleton()
+            binding.txtUserBio.loadSkeleton()
+            binding.txtFollowers.loadSkeleton()
+            binding.txtFollowing.loadSkeleton()
         }
-        binding.imgPicture.loadSkeleton()
-        binding.txtName.loadSkeleton(length = 25)
-        binding.txtUserName.loadSkeleton()
-        binding.txtUserBio.loadSkeleton()
-        binding.txtFollowers.loadSkeleton()
-        binding.txtFollowing.loadSkeleton()
     }
 
     private fun endLoading() {
-        binding.imgPicture.hideSkeleton()
-        binding.txtName.hideSkeleton()
-        binding.txtUserName.hideSkeleton()
-        binding.txtUserBio.hideSkeleton()
-        binding.txtFollowers.hideSkeleton()
-        binding.txtFollowing.hideSkeleton()
-        binding.ctlUserInfo.hideSkeleton()
+        loadingController--
+        if (loadingController == 0) {
+            binding.imgPicture.hideSkeleton()
+            binding.txtName.hideSkeleton()
+            binding.txtUserName.hideSkeleton()
+            binding.txtUserBio.hideSkeleton()
+            binding.txtFollowers.hideSkeleton()
+            binding.txtFollowing.hideSkeleton()
+            binding.ctlUserInfo.hideSkeleton()
+        }
     }
 
 }

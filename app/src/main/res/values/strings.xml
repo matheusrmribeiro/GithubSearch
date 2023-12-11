@@ -17,7 +17,9 @@
     <string name="users_detail_user_name"><b>@</b> %s</string>
 
     <string name="users_detail">Detalhes do usuário</string>
-    <string name="users_detail_follower"><b>%s</b> seguidores</string>
-    <string name="users_detail_following"><b>%s</b> seguindo</string>
+    <string name="users_detail_follower"><![CDATA[<b>%s</b>]]> seguidores</string>
+    <string name="users_detail_following"><![CDATA[<b>%s</b>]]> seguindo</string>
+    <string name="users_detail_section_repositories">Repositórios</string>
+    <string name="users_detail_repositories_not_found">Nenhum repositório público encontrado.</string>
 
 </resources>

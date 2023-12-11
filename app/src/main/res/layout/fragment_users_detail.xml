@@ -87,4 +87,31 @@
             tools:text="Mobile Developer | Software Developer | Android Developer | Kotlin | Flutter"
             tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/txt_section_repositories"
+        style="@style/TextViewHeaderStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/users_detail_section_repositories"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ctl_user_info" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_repositories"
+        android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_section_repositories"
+        tools:listitem="@layout/recycler_view_cell_repository" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
