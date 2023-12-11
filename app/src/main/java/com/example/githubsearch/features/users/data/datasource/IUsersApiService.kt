@@ -1,6 +1,7 @@
 package com.example.githubsearch.features.users.data.datasource
 
-import com.example.githubsearch.features.users.data.models.UserResponse
+import com.example.githubsearch.features.users.data.models.UserBasicResponse
+import com.example.githubsearch.features.users.data.models.UserCompleteResponse
 import com.example.githubsearch.features.users.data.models.UserSearchResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -10,7 +11,7 @@ import retrofit2.http.Query
 interface IUsersApiService {
 
     @GET("users")
-    suspend fun getAllUsers(): Response<List<UserResponse>>
+    suspend fun getAllUsers(): Response<List<UserBasicResponse>>
 
     @GET("search/users")
     suspend fun getSearchUsers(
@@ -20,5 +21,5 @@ interface IUsersApiService {
     @GET("users/{userName}")
     suspend fun getUserByUserName(
         @Path("userName") userName: String
-    ): Response<UserResponse>
+    ): Response<UserCompleteResponse>
 }

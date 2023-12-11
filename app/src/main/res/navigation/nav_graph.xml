@@ -3,12 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/UsersFragment">
+    app:startDestination="@id/usersFragment">
 
     <fragment
-        android:id="@+id/UsersFragment"
+        android:id="@+id/usersFragment"
         android:name="com.example.githubsearch.features.users.presentation.listing.UsersListFragment"
         tools:layout="@layout/fragment_users_list">
 
+        <action
+            android:id="@+id/action_UsersFragment_to_usersDetailFragment"
+            app:destination="@id/usersDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/usersDetailFragment"
+        android:name="com.example.githubsearch.features.users.presentation.details.UsersDetailFragment"
+        android:label="@string/users_detail"
+        tools:layout="@layout/fragment_users_detail" >
+        <argument
+            android:name="userName"
+            app:argType="string" />
     </fragment>
 </navigation>

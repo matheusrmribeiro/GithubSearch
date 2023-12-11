@@ -1,6 +1,7 @@
 package com.example.githubsearch
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -22,14 +23,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
-
     }
 
     override fun onStart() {
         super.onStart()
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        setupNavController()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -38,4 +36,15 @@ class MainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
 
+    private fun setupNavController() {
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        appBarConfiguration = AppBarConfiguration(navController.graph)
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navController.addOnDestinationChangedListener() { controller, destination, _ ->
+            if (destination.id == controller.graph.startDestinationId)
+                binding.srcSearch.visibility = View.VISIBLE
+            else
+                binding.srcSearch.visibility = View.GONE
+        }
+    }
 }

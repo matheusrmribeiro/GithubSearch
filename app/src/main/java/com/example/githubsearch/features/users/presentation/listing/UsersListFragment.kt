@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.MainActivity
@@ -13,7 +14,7 @@ import com.example.githubsearch.core.utils.Timer
 import com.example.githubsearch.core.utils.ViewState
 import com.example.githubsearch.databinding.FragmentUsersListBinding
 import com.example.githubsearch.databinding.RecyclerViewCellUsersBinding
-import com.example.githubsearch.features.users.domain.entities.UserEntity
+import com.example.githubsearch.features.users.domain.entities.UserBasicEntity
 import com.example.githubsearch.features.users.presentation.listing.cell.UserCell
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.enicolas.genericadapter.AdapterHolderType
@@ -38,17 +39,17 @@ class UsersListFragment : BaseFragment<FragmentUsersListBinding>() {
      * Adapters
      */
     private val genericRecyclerAdapter =
-        GenericRecyclerAdapter(Snapshot(object : DiffUtil.ItemCallback<UserEntity>() {
+        GenericRecyclerAdapter(Snapshot(object : DiffUtil.ItemCallback<UserBasicEntity>() {
             override fun areItemsTheSame(
-                oldItem: UserEntity,
-                newItem: UserEntity
+                oldItem: UserBasicEntity,
+                newItem: UserBasicEntity
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: UserEntity,
-                newItem: UserEntity
+                oldItem: UserBasicEntity,
+                newItem: UserBasicEntity
             ): Boolean {
                 return oldItem.userName == newItem.userName
             }
@@ -72,6 +73,41 @@ class UsersListFragment : BaseFragment<FragmentUsersListBinding>() {
                 fetchData()
             })
             return false
+        }
+    }
+
+    private val recyclerViewDelegate = object : GenericRecylerAdapterDelegate {
+        override fun numberOfRows(adapter: GenericRecyclerAdapter): Int {
+            return adapter.snapshot?.snapshotList?.size ?: 0
+        }
+
+        override fun cellForPosition(
+            adapter: GenericRecyclerAdapter,
+            cell: RecyclerView.ViewHolder,
+            position: Int
+        ) {
+            getSnapshotItem<UserBasicEntity>(adapter, position)?.let { item ->
+                (cell as? UserCell)?.set(user = item)
+            }
+        }
+
+        override fun registerCellAtPosition(
+            adapter: GenericRecyclerAdapter,
+            position: Int
+        ): AdapterHolderType {
+            return AdapterHolderType(
+                RecyclerViewCellUsersBinding::class.java,
+                UserCell::class.java,
+                0
+            )
+        }
+
+        override fun didSelectItemAtIndex(adapter: GenericRecyclerAdapter, index: Int) {
+            getSnapshotItem<UserBasicEntity>(adapter, index)?.let { item ->
+                val directions =
+                    UsersListFragmentDirections.actionUsersFragmentToUsersDetailFragment(item.userName)
+                findNavController().navigate(directions)
+            }
         }
     }
 
@@ -105,40 +141,6 @@ class UsersListFragment : BaseFragment<FragmentUsersListBinding>() {
         }
     }
 
-
-    private val recyclerViewDelegate = object : GenericRecylerAdapterDelegate {
-        override fun numberOfRows(adapter: GenericRecyclerAdapter): Int {
-            return adapter.snapshot?.snapshotList?.size ?: 0
-        }
-
-        override fun cellForPosition(
-            adapter: GenericRecyclerAdapter,
-            cell: RecyclerView.ViewHolder,
-            position: Int
-        ) {
-            getSnapshotItem<UserEntity>(adapter, position)?.let { item ->
-                (cell as? UserCell)?.set(user = item)
-            }
-        }
-
-        override fun registerCellAtPosition(
-            adapter: GenericRecyclerAdapter,
-            position: Int
-        ): AdapterHolderType {
-            return AdapterHolderType(
-                RecyclerViewCellUsersBinding::class.java,
-                UserCell::class.java,
-                0
-            )
-        }
-
-        override fun didSelectItemAtIndex(adapter: GenericRecyclerAdapter, index: Int) {
-            getSnapshotItem<UserEntity>(adapter, index)?.let { item ->
-
-            }
-        }
-    }
-
     private fun fetchData() {
         viewModel.fetchUsers().observe { viewState ->
             when (viewState) {
@@ -158,7 +160,7 @@ class UsersListFragment : BaseFragment<FragmentUsersListBinding>() {
         binding.pgrLoading.show()
     }
 
-    private fun onRequestSuccess(viewState: ViewState.Success<List<UserEntity>>) {
+    private fun onRequestSuccess(viewState: ViewState.Success<List<UserBasicEntity>>) {
         binding.pgrLoading.hide()
         genericRecyclerAdapter.snapshot?.snapshotList = viewState.result
         configureEmptyMessage(showMessage = viewState.result.isEmpty())

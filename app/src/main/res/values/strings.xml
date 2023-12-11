@@ -1,14 +1,23 @@
 <resources>
     <string name="app_name">Github Search</string>
-    <string name="title_activity_main">MainActivity</string>
+
+    <!-- General -->
+    <string name="search">Buscar</string>
+    <string name="data_fetching_error">Falha ao carregar os dados.</string>
 
     <string name="search_button">Search button</string>
     <string name="profile_picture">Profile picture</string>
 
-    <string name="data_fetching_error">Falha ao carregar os dados.</string>
+    <!-- Users listing -->
     <string name="users_search_not_found">Nenhum usuário encontrado.</string>
     <string name="users_search_hint">Buscar pelo @ de algum usário</string>
-    <string name="search">Buscar</string>
     <string name="users_search_again">Buscar novamente</string>
+
+    <!-- Users detail -->
+    <string name="users_detail_user_name"><b>@</b> %s</string>
+
+    <string name="users_detail">Detalhes do usuário</string>
+    <string name="users_detail_follower"><b>%s</b> seguidores</string>
+    <string name="users_detail_following"><b>%s</b> seguindo</string>
 
 </resources>

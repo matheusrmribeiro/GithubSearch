@@ -1,4 +1,4 @@
-package com.example.githubsearch.features.users.presentation.listing
+package com.example.githubsearch.features.users.presentation.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -11,19 +11,15 @@ import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 @HiltViewModel
-class UsersListViewModel @Inject constructor(
+class UsersDetailViewModel @Inject constructor(
     private val usersRepository: IUsersRepository
 ) : ViewModel() {
 
-    private var searchQuery: String? = null
+    lateinit var userName: String
 
-    fun setSearchQuery(query: String?) {
-        searchQuery = query
-    }
-
-    fun fetchUsers() = flow {
-        when (val response = usersRepository.getUsers(searchQuery)) {
-            is ResponseWrapper.Success -> emit(ViewState.Success(response.result!!))
+    fun fetchUsersByUserName() = flow {
+        when (val response = usersRepository.getUserByUserName(userName)) {
+            is ResponseWrapper.Success -> emit(ViewState.Success(response.result))
             is ResponseWrapper.Error -> emit(ViewState.Error("", response.message))
         }
     }

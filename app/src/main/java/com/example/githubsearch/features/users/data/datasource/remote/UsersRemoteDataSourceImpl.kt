@@ -3,13 +3,14 @@ package com.example.githubsearch.features.users.data.datasource.remote
 import com.example.githubsearch.core.network.ResponseWrapper
 import com.example.githubsearch.core.network.doRequest
 import com.example.githubsearch.features.users.data.datasource.IUsersApiService
-import com.example.githubsearch.features.users.data.models.UserResponse
+import com.example.githubsearch.features.users.data.models.UserBasicResponse
+import com.example.githubsearch.features.users.data.models.UserCompleteResponse
 import javax.inject.Inject
 
 class UsersRemoteDataSourceImpl @Inject constructor(
     private val usersService: IUsersApiService
 ) : IUsersRemoteDataSource {
-    override suspend fun getUsers(query: String?): ResponseWrapper<List<UserResponse>> {
+    override suspend fun getUsers(query: String?): ResponseWrapper<List<UserBasicResponse>> {
         return if (query == null) {
             doRequest {
                 usersService.getAllUsers()
@@ -25,7 +26,7 @@ class UsersRemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUserByUserName(userName: String): ResponseWrapper<UserResponse> {
+    override suspend fun getUserByUserName(userName: String): ResponseWrapper<UserCompleteResponse> {
         return doRequest {
             usersService.getUserByUserName(userName)
         }
