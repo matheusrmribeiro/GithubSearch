@@ -20,6 +20,8 @@ import io.github.enicolas.genericadapter.AdapterHolderType
 import io.github.enicolas.genericadapter.adapter.GenericRecyclerAdapter
 import io.github.enicolas.genericadapter.adapter.GenericRecylerAdapterDelegate
 import io.github.enicolas.genericadapter.diffable.Snapshot
+import koleton.api.hideSkeleton
+import koleton.api.loadSkeleton
 
 @AndroidEntryPoint
 class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
@@ -113,12 +115,15 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
 
     private fun onRequestError(viewState: ViewState.Error) {
         configureErrorMessage(messageResId = viewState.messageRes ?: 0, showMessage = true)
+        endLoading()
     }
 
     private fun onRequestLoading() {
+        startLoading()
     }
 
     private fun onRequestSuccess(viewState: ViewState.Success<UserCompleteEntity?>) {
+        endLoading()
         setupData(viewState.result)
     }
 
@@ -151,4 +156,27 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
     private fun <T> getSnapshotItem(adapter: GenericRecyclerAdapter, index: Int): T? {
         return (adapter.snapshot?.snapshotList?.get(index) as? T)
     }
+
+    private fun startLoading() {
+        binding.ctlUserInfo.loadSkeleton {
+            shimmer(true)
+        }
+        binding.imgPicture.loadSkeleton()
+        binding.txtName.loadSkeleton(length = 25)
+        binding.txtUserName.loadSkeleton()
+        binding.txtUserBio.loadSkeleton()
+        binding.txtFollowers.loadSkeleton()
+        binding.txtFollowing.loadSkeleton()
+    }
+
+    private fun endLoading() {
+        binding.imgPicture.hideSkeleton()
+        binding.txtName.hideSkeleton()
+        binding.txtUserName.hideSkeleton()
+        binding.txtUserBio.hideSkeleton()
+        binding.txtFollowers.hideSkeleton()
+        binding.txtFollowing.hideSkeleton()
+        binding.ctlUserInfo.hideSkeleton()
+    }
+
 }

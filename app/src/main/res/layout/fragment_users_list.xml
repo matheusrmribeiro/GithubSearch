@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <androidx.core.widget.ContentLoadingProgressBar
-        android:id="@+id/pgr_loading"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_users"
         android:layout_width="match_parent"
@@ -28,7 +18,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pgr_loading"
+        app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/recycler_view_cell_users" />
 
     <include

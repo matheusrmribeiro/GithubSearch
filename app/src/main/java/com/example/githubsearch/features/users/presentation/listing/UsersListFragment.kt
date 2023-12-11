@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.MainActivity
+import com.example.githubsearch.R
 import com.example.githubsearch.core.base.BaseFragment
 import com.example.githubsearch.core.utils.Timer
 import com.example.githubsearch.core.utils.ViewState
@@ -21,6 +22,8 @@ import io.github.enicolas.genericadapter.AdapterHolderType
 import io.github.enicolas.genericadapter.adapter.GenericRecyclerAdapter
 import io.github.enicolas.genericadapter.adapter.GenericRecylerAdapterDelegate
 import io.github.enicolas.genericadapter.diffable.Snapshot
+import koleton.api.hideSkeleton
+import koleton.api.loadSkeleton
 
 
 @AndroidEntryPoint
@@ -152,16 +155,18 @@ class UsersListFragment : BaseFragment<FragmentUsersListBinding>() {
     }
 
     private fun onRequestError(viewState: ViewState.Error) {
-        binding.pgrLoading.hide()
+        binding.rcvUsers.hideSkeleton()
         configureErrorMessage(messageResId = viewState.messageRes ?: 0, showMessage = true)
     }
 
     private fun onRequestLoading() {
-        binding.pgrLoading.show()
+        binding.rcvUsers.loadSkeleton(R.layout.recycler_view_cell_users) {
+            itemCount(4)
+        }
     }
 
     private fun onRequestSuccess(viewState: ViewState.Success<List<UserBasicEntity>>) {
-        binding.pgrLoading.hide()
+        binding.rcvUsers.hideSkeleton()
         genericRecyclerAdapter.snapshot?.snapshotList = viewState.result
         configureEmptyMessage(showMessage = viewState.result.isEmpty())
     }

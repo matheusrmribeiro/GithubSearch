@@ -68,6 +68,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0-rc01")
     implementation("com.github.e-nicolas:GenericAdapter:v1.0.9")
+    implementation("com.ericktijerou.koleton:koleton:1.0.0-beta01")
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
