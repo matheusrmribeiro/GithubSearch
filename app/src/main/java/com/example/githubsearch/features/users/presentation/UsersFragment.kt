@@ -1,8 +1,8 @@
 package com.example.githubsearch.features.users.presentation
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
@@ -28,6 +28,15 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentUsersBinding
         get() = FragmentUsersBinding::inflate
 
+    /**
+     * Variables
+     */
+    private val viewModel: UsersViewModel by viewModels()
+    private val searchTimer: Timer = Timer()
+
+    /**
+     * Adapters
+     */
     private val genericRecyclerAdapter =
         GenericRecyclerAdapter(Snapshot(object : DiffUtil.ItemCallback<UserEntity>() {
             override fun areItemsTheSame(
@@ -45,8 +54,6 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>() {
             }
         }))
 
-    private val viewModel: UsersViewModel by viewModels()
-    private val searchTimer: Timer = Timer()
     private val querySearch = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             if (query?.isEmpty() == true)
@@ -68,9 +75,13 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>() {
         }
     }
 
+    /**
+     * Functions
+     */
     override fun setupFragment() {
         setupRecycler()
         setupSearchView()
+        setupButtons()
         fetchData()
     }
 
@@ -86,6 +97,12 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>() {
         val searchView = (activity as MainActivity).searchView
         searchView.setOnQueryTextListener(querySearch)
         searchView.setIconifiedByDefault(false)
+    }
+
+    private fun setupButtons() {
+        binding.incError.btnSearchAgain.setOnClickListener {
+            fetchData()
+        }
     }
 
 
@@ -133,16 +150,42 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>() {
     }
 
     private fun onRequestError(viewState: ViewState.Error) {
-        Toast.makeText(context, viewState.messageRes ?: 0, Toast.LENGTH_LONG).show()
-
+        binding.pgrLoading.hide()
+        configureErrorMessage(messageResId = viewState.messageRes ?: 0, showMessage = true)
     }
 
     private fun onRequestLoading() {
-
+        binding.pgrLoading.show()
     }
 
     private fun onRequestSuccess(viewState: ViewState.Success<List<UserEntity>>) {
+        binding.pgrLoading.hide()
         genericRecyclerAdapter.snapshot?.snapshotList = viewState.result
+        configureEmptyMessage(showMessage = viewState.result.isEmpty())
+    }
+
+    private fun configureEmptyMessage(showMessage: Boolean) {
+        if (showMessage) {
+            binding.rcvUsers.visibility = View.GONE
+            binding.incError.root.visibility = View.GONE
+            binding.incEmpty.root.visibility = View.VISIBLE
+        } else {
+            binding.rcvUsers.visibility = View.VISIBLE
+            binding.incEmpty.root.visibility = View.GONE
+        }
+    }
+
+    private fun configureErrorMessage(messageResId: Int, showMessage: Boolean) {
+        if (showMessage) {
+            binding.rcvUsers.visibility = View.GONE
+            binding.incEmpty.root.visibility = View.GONE
+            binding.incError.txtErrorMessage.setText(messageResId)
+            binding.incError.root.visibility = View.VISIBLE
+        } else {
+            binding.incError.root.visibility = View.GONE
+            binding.incError.txtErrorMessage.text = ""
+            binding.rcvUsers.visibility = View.VISIBLE
+        }
     }
 
     /**

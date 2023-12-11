@@ -4,16 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/card_background_color"
-    android:padding="16dp">
+    android:background="@drawable/background_shape_rounded_card"
+    android:padding="16dp"
+    android:layout_marginBottom="8dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/img_picture"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:contentDescription="@string/profile_picture"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/CircleImageView" />
 
     <TextView
         android:id="@+id/txt_user_name"
@@ -23,7 +25,9 @@
         android:layout_marginStart="8dp"
         android:maxLines="2"
         app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@+id/txt_user_bio"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/img_picture"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Matheus Ribeiro Miranda" />
@@ -36,10 +40,14 @@
         android:layout_marginStart="8dp"
         android:ellipsize="end"
         android:maxLines="1"
+        android:visibility="gone"
         app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/img_picture"
         app:layout_constraintTop_toBottomOf="@+id/txt_user_name"
-        tools:text="Mobile Developer | Software Developer | Android Developer | Kotlin | Flutter" />
+        tools:text="Mobile Developer | Software Developer | Android Developer | Kotlin | Flutter"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
