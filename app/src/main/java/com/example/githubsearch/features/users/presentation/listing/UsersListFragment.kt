@@ -135,6 +135,7 @@ class UsersListFragment : BaseFragment<FragmentUsersListBinding>() {
     private fun setupSearchView() {
         val searchView = (activity as MainActivity).searchView
         searchView.setOnQueryTextListener(querySearch)
+        searchView.queryHint = resources.getString(R.string.users_search_hint)
         searchView.setIconifiedByDefault(false)
     }
 

@@ -19,6 +19,8 @@
         <item name="searchIcon">@drawable/ic_search</item>
         <item name="closeIcon">@drawable/ic_close</item>
         <item name="editTextColor">@color/primary_text_color</item>
+        <item name="hintTextColor">@color/secondary_text_color</item>
+        <item name="android:textColorHint">@color/secondary_text_color</item>
         <item name="android:textColorPrimary">@color/primary_text_color</item>
         <item name="android:textColor">@color/primary_text_color</item>
         <item name="android:editTextColor">@color/primary_text_color</item>

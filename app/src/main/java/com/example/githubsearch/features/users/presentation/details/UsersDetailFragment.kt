@@ -1,7 +1,11 @@
 package com.example.githubsearch.features.users.presentation.details
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DiffUtil
@@ -24,6 +28,7 @@ import io.github.enicolas.genericadapter.adapter.GenericRecylerAdapterDelegate
 import io.github.enicolas.genericadapter.diffable.Snapshot
 import koleton.api.hideSkeleton
 import koleton.api.loadSkeleton
+
 
 @AndroidEntryPoint
 class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
@@ -88,7 +93,12 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
 
         override fun didSelectItemAtIndex(adapter: GenericRecyclerAdapter, index: Int) {
             getSnapshotItem<UserRepositoryEntity>(adapter, index)?.let { item ->
-
+                try {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(item.url))
+                    startActivity(browserIntent)
+                } catch (_: Exception) {
+                    Toast.makeText(context, R.string.users_detail_repositories_open_fail, Toast.LENGTH_LONG)
+                }
             }
         }
     }
@@ -158,7 +168,10 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
     private fun setupUserInfo(data: UserCompleteEntity?) {
         data?.let {
             binding.txtName.text = data.name
-            binding.txtUserBio.text = data.bio
+            data.bio?.let {
+                binding.txtUserBio.text = it
+                binding.txtUserBio.visibility = View.VISIBLE
+            }
             binding.imgPicture.load(data.picture) {
                 error(R.drawable.ic_user)
             }
@@ -196,6 +209,9 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
             binding.txtUserBio.loadSkeleton()
             binding.txtFollowers.loadSkeleton()
             binding.txtFollowing.loadSkeleton()
+            binding.rcvRepositories.loadSkeleton(R.layout.recycler_view_cell_repository) {
+                itemCount(4)
+            }
         }
     }
 
@@ -209,6 +225,7 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
             binding.txtFollowers.hideSkeleton()
             binding.txtFollowing.hideSkeleton()
             binding.ctlUserInfo.hideSkeleton()
+            binding.rcvRepositories.hideSkeleton()
         }
     }
 
