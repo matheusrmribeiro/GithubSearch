@@ -7,8 +7,8 @@
 
     <fragment
         android:id="@+id/UsersFragment"
-        android:name="com.example.githubsearch.features.users.presentation.UsersFragment"
-        tools:layout="@layout/fragment_users">
+        android:name="com.example.githubsearch.features.users.presentation.listing.UsersListFragment"
+        tools:layout="@layout/fragment_users_list">
 
     </fragment>
 </navigation>

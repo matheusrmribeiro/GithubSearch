@@ -1,4 +1,4 @@
-package com.example.githubsearch.features.users.presentation
+package com.example.githubsearch.features.users.presentation.listing
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 @HiltViewModel
-class UsersViewModel @Inject constructor(
+class UsersListViewModel @Inject constructor(
     private val usersRepository: IUsersRepository
 ) : ViewModel() {
 

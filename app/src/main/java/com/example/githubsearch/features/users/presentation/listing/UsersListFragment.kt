@@ -1,4 +1,4 @@
-package com.example.githubsearch.features.users.presentation
+package com.example.githubsearch.features.users.presentation.listing
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +11,10 @@ import com.example.githubsearch.MainActivity
 import com.example.githubsearch.core.base.BaseFragment
 import com.example.githubsearch.core.utils.Timer
 import com.example.githubsearch.core.utils.ViewState
-import com.example.githubsearch.databinding.FragmentUsersBinding
+import com.example.githubsearch.databinding.FragmentUsersListBinding
 import com.example.githubsearch.databinding.RecyclerViewCellUsersBinding
 import com.example.githubsearch.features.users.domain.entities.UserEntity
-import com.example.githubsearch.features.users.presentation.cell.UserCell
+import com.example.githubsearch.features.users.presentation.listing.cell.UserCell
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.enicolas.genericadapter.AdapterHolderType
 import io.github.enicolas.genericadapter.adapter.GenericRecyclerAdapter
@@ -23,15 +23,15 @@ import io.github.enicolas.genericadapter.diffable.Snapshot
 
 
 @AndroidEntryPoint
-class UsersFragment : BaseFragment<FragmentUsersBinding>() {
+class UsersListFragment : BaseFragment<FragmentUsersListBinding>() {
 
-    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentUsersBinding
-        get() = FragmentUsersBinding::inflate
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentUsersListBinding
+        get() = FragmentUsersListBinding::inflate
 
     /**
      * Variables
      */
-    private val viewModel: UsersViewModel by viewModels()
+    private val viewModel: UsersListViewModel by viewModels()
     private val searchTimer: Timer = Timer()
 
     /**

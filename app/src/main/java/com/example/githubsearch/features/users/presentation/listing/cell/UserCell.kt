@@ -1,4 +1,4 @@
-package com.example.githubsearch.features.users.presentation.cell
+package com.example.githubsearch.features.users.presentation.listing.cell
 
 import android.view.View
 import coil.load
