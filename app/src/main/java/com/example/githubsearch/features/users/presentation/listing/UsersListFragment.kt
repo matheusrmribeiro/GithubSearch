@@ -104,6 +104,7 @@ class UsersListFragment : BaseFragment<FragmentUsersListBinding>() {
         } else {
             binding.rcvUsers.visibility = View.VISIBLE
             binding.incEmpty.root.visibility = View.GONE
+            binding.incError.root.visibility = View.GONE
         }
     }
 

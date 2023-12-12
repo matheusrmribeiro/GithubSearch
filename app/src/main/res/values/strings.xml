@@ -7,9 +7,9 @@
 
     <string name="search_button">Search button</string>
     <string name="profile_picture">Profile picture</string>
+    <string name="search_not_found">Nenhum dado encontrado.</string>
 
     <!-- Users listing -->
-    <string name="users_search_not_found">Nenhum usuário encontrado.</string>
     <string name="users_search_hint">Buscar usuário</string>
     <string name="users_search_again">Buscar novamente</string>
 

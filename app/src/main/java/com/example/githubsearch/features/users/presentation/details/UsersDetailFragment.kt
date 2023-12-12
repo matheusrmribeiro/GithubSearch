@@ -94,15 +94,32 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
 
     private fun onRequestRepositorySuccess(viewState: ViewState.Success<List<UserRepositoryEntity>?>) {
         endLoading()
-        setupRepositoryInfo(viewState.result)
+        viewState.result?.let {
+            setupRepositoryInfo(it)
+            configureEmptyMessage(showMessage = it.isEmpty())
+        }
     }
 
     private fun configureEmptyMessage(showMessage: Boolean) {
-
+        if (showMessage) {
+            binding.rcvRepositories.visibility = View.GONE
+            binding.incError.root.visibility = View.GONE
+            binding.incEmpty.root.visibility = View.VISIBLE
+        } else {
+            binding.rcvRepositories.visibility = View.VISIBLE
+            binding.incEmpty.root.visibility = View.GONE
+            binding.incError.root.visibility = View.GONE
+        }
     }
 
     private fun configureErrorMessage(messageResId: Int, showMessage: Boolean) {
-
+        if (showMessage) {
+            binding.incError.txtErrorMessage.setText(messageResId)
+            binding.incError.root.visibility = View.VISIBLE
+        } else {
+            binding.incError.root.visibility = View.GONE
+            binding.incError.txtErrorMessage.text = ""
+        }
     }
 
     private fun setupUserInfo(data: UserCompleteEntity?) {
@@ -124,10 +141,9 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
         }
     }
 
-    private fun setupRepositoryInfo(data: List<UserRepositoryEntity>?) {
-        data?.let {
-            genericRecyclerAdapter.snapshot?.snapshotList = data
-        }
+    private fun setupRepositoryInfo(data: List<UserRepositoryEntity>) {
+        genericRecyclerAdapter.snapshot?.snapshotList = data
+
     }
 
     /**

@@ -102,8 +102,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_repositories"
         android:layout_width="match_parent"
-        android:layout_marginTop="8dp"
         android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
         android:clipToPadding="false"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -113,5 +113,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_section_repositories"
         tools:listitem="@layout/recycler_view_cell_repository" />
+
+    <include
+        android:id="@+id/inc_empty"
+        layout="@layout/empty_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_section_repositories"
+        tools:visibility="visible" />
+
+    <include
+        android:id="@+id/inc_error"
+        layout="@layout/error_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

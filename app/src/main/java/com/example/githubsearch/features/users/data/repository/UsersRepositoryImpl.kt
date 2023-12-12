@@ -37,7 +37,7 @@ class UsersRepositoryImpl @Inject constructor(
                     ResponseWrapper.Success(user)
                 } ?: run {
                     ResponseWrapper.Error(
-                        message = R.string.users_search_not_found
+                        message = R.string.search_not_found
                     )
                 }
             }
