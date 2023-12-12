@@ -63,8 +63,6 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
             }
         }))
 
-
-
     private val recyclerViewDelegate = object : GenericRecylerAdapterDelegate {
         override fun numberOfRows(adapter: GenericRecyclerAdapter): Int {
             return adapter.snapshot?.snapshotList?.size ?: 0
