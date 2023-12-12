@@ -39,82 +39,6 @@ class UsersListFragment : BaseFragment<FragmentUsersListBinding>() {
     private val searchTimer: Timer = Timer()
 
     /**
-     * Adapters
-     */
-    private val genericRecyclerAdapter =
-        GenericRecyclerAdapter(Snapshot(object : DiffUtil.ItemCallback<UserBasicEntity>() {
-            override fun areItemsTheSame(
-                oldItem: UserBasicEntity,
-                newItem: UserBasicEntity
-            ): Boolean {
-                return oldItem == newItem
-            }
-
-            override fun areContentsTheSame(
-                oldItem: UserBasicEntity,
-                newItem: UserBasicEntity
-            ): Boolean {
-                return oldItem.userName == newItem.userName
-            }
-        }))
-
-    private val querySearch = object : SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            if (query?.isEmpty() == true)
-                viewModel.setSearchQuery(null)
-            else
-                viewModel.setSearchQuery(query)
-            return false
-        }
-
-        override fun onQueryTextChange(newText: String?): Boolean {
-            if (newText?.isEmpty() == true)
-                viewModel.setSearchQuery(null)
-            else
-                viewModel.setSearchQuery(newText)
-            searchTimer.schedule(1000, task = {
-                fetchData()
-            })
-            return false
-        }
-    }
-
-    private val recyclerViewDelegate = object : GenericRecylerAdapterDelegate {
-        override fun numberOfRows(adapter: GenericRecyclerAdapter): Int {
-            return adapter.snapshot?.snapshotList?.size ?: 0
-        }
-
-        override fun cellForPosition(
-            adapter: GenericRecyclerAdapter,
-            cell: RecyclerView.ViewHolder,
-            position: Int
-        ) {
-            getSnapshotItem<UserBasicEntity>(adapter, position)?.let { item ->
-                (cell as? UserCell)?.set(user = item)
-            }
-        }
-
-        override fun registerCellAtPosition(
-            adapter: GenericRecyclerAdapter,
-            position: Int
-        ): AdapterHolderType {
-            return AdapterHolderType(
-                RecyclerViewCellUsersBinding::class.java,
-                UserCell::class.java,
-                0
-            )
-        }
-
-        override fun didSelectItemAtIndex(adapter: GenericRecyclerAdapter, index: Int) {
-            getSnapshotItem<UserBasicEntity>(adapter, index)?.let { item ->
-                val directions =
-                    UsersListFragmentDirections.actionUsersFragmentToUsersDetailFragment(item.userName)
-                findNavController().navigate(directions)
-            }
-        }
-    }
-
-    /**
      * Functions
      */
     override fun setupFragment() {
@@ -193,6 +117,82 @@ class UsersListFragment : BaseFragment<FragmentUsersListBinding>() {
             binding.incError.root.visibility = View.GONE
             binding.incError.txtErrorMessage.text = ""
             binding.rcvUsers.visibility = View.VISIBLE
+        }
+    }
+
+    /**
+     * Adapters
+     */
+    private val genericRecyclerAdapter =
+        GenericRecyclerAdapter(Snapshot(object : DiffUtil.ItemCallback<UserBasicEntity>() {
+            override fun areItemsTheSame(
+                oldItem: UserBasicEntity,
+                newItem: UserBasicEntity
+            ): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(
+                oldItem: UserBasicEntity,
+                newItem: UserBasicEntity
+            ): Boolean {
+                return oldItem.userName == newItem.userName
+            }
+        }))
+
+    private val querySearch = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            if (query?.isEmpty() == true)
+                viewModel.setSearchQuery(null)
+            else
+                viewModel.setSearchQuery(query)
+            return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            if (newText?.isEmpty() == true)
+                viewModel.setSearchQuery(null)
+            else
+                viewModel.setSearchQuery(newText)
+            searchTimer.schedule(1000, task = {
+                fetchData()
+            })
+            return false
+        }
+    }
+
+    private val recyclerViewDelegate = object : GenericRecylerAdapterDelegate {
+        override fun numberOfRows(adapter: GenericRecyclerAdapter): Int {
+            return adapter.snapshot?.snapshotList?.size ?: 0
+        }
+
+        override fun cellForPosition(
+            adapter: GenericRecyclerAdapter,
+            cell: RecyclerView.ViewHolder,
+            position: Int
+        ) {
+            getSnapshotItem<UserBasicEntity>(adapter, position)?.let { item ->
+                (cell as? UserCell)?.set(user = item)
+            }
+        }
+
+        override fun registerCellAtPosition(
+            adapter: GenericRecyclerAdapter,
+            position: Int
+        ): AdapterHolderType {
+            return AdapterHolderType(
+                RecyclerViewCellUsersBinding::class.java,
+                UserCell::class.java,
+                0
+            )
+        }
+
+        override fun didSelectItemAtIndex(adapter: GenericRecyclerAdapter, index: Int) {
+            getSnapshotItem<UserBasicEntity>(adapter, index)?.let { item ->
+                val directions =
+                    UsersListFragmentDirections.actionUsersFragmentToUsersDetailFragment(item.userName)
+                findNavController().navigate(directions)
+            }
         }
     }
 

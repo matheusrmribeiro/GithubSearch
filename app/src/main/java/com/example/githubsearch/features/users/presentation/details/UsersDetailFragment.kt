@@ -44,64 +44,6 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
     private var loadingController: Int = 0
 
     /**
-     * Adapters
-     */
-    private val genericRecyclerAdapter =
-        GenericRecyclerAdapter(Snapshot(object : DiffUtil.ItemCallback<UserBasicEntity>() {
-            override fun areItemsTheSame(
-                oldItem: UserBasicEntity,
-                newItem: UserBasicEntity
-            ): Boolean {
-                return oldItem == newItem
-            }
-
-            override fun areContentsTheSame(
-                oldItem: UserBasicEntity,
-                newItem: UserBasicEntity
-            ): Boolean {
-                return oldItem.userName == newItem.userName
-            }
-        }))
-
-    private val recyclerViewDelegate = object : GenericRecylerAdapterDelegate {
-        override fun numberOfRows(adapter: GenericRecyclerAdapter): Int {
-            return adapter.snapshot?.snapshotList?.size ?: 0
-        }
-
-        override fun cellForPosition(
-            adapter: GenericRecyclerAdapter,
-            cell: RecyclerView.ViewHolder,
-            position: Int
-        ) {
-            getSnapshotItem<UserRepositoryEntity>(adapter, position)?.let { item ->
-                (cell as? RepositoryCell)?.set(repository = item)
-            }
-        }
-
-        override fun registerCellAtPosition(
-            adapter: GenericRecyclerAdapter,
-            position: Int
-        ): AdapterHolderType {
-            return AdapterHolderType(
-                RecyclerViewCellRepositoryBinding::class.java,
-                RepositoryCell::class.java,
-                0
-            )
-        }
-
-        override fun didSelectItemAtIndex(adapter: GenericRecyclerAdapter, index: Int) {
-            getSnapshotItem<UserRepositoryEntity>(adapter, index)?.let { item ->
-                try {
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(item.url))
-                    startActivity(browserIntent)
-                } catch (_: Exception) {
-                    Toast.makeText(context, R.string.users_detail_repositories_open_fail, Toast.LENGTH_LONG)
-                }
-            }
-        }
-    }
-
-    /**
      * Functions
      */
     override fun setupFragment() {
@@ -185,6 +127,64 @@ class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
     private fun setupRepositoryInfo(data: List<UserRepositoryEntity>?) {
         data?.let {
             genericRecyclerAdapter.snapshot?.snapshotList = data
+        }
+    }
+
+    /**
+     * Adapters
+     */
+    private val genericRecyclerAdapter =
+        GenericRecyclerAdapter(Snapshot(object : DiffUtil.ItemCallback<UserBasicEntity>() {
+            override fun areItemsTheSame(
+                oldItem: UserBasicEntity,
+                newItem: UserBasicEntity
+            ): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(
+                oldItem: UserBasicEntity,
+                newItem: UserBasicEntity
+            ): Boolean {
+                return oldItem.userName == newItem.userName
+            }
+        }))
+
+    private val recyclerViewDelegate = object : GenericRecylerAdapterDelegate {
+        override fun numberOfRows(adapter: GenericRecyclerAdapter): Int {
+            return adapter.snapshot?.snapshotList?.size ?: 0
+        }
+
+        override fun cellForPosition(
+            adapter: GenericRecyclerAdapter,
+            cell: RecyclerView.ViewHolder,
+            position: Int
+        ) {
+            getSnapshotItem<UserRepositoryEntity>(adapter, position)?.let { item ->
+                (cell as? RepositoryCell)?.set(repository = item)
+            }
+        }
+
+        override fun registerCellAtPosition(
+            adapter: GenericRecyclerAdapter,
+            position: Int
+        ): AdapterHolderType {
+            return AdapterHolderType(
+                RecyclerViewCellRepositoryBinding::class.java,
+                RepositoryCell::class.java,
+                0
+            )
+        }
+
+        override fun didSelectItemAtIndex(adapter: GenericRecyclerAdapter, index: Int) {
+            getSnapshotItem<UserRepositoryEntity>(adapter, index)?.let { item ->
+                try {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(item.url))
+                    startActivity(browserIntent)
+                } catch (_: Exception) {
+                    Toast.makeText(context, R.string.users_detail_repositories_open_fail, Toast.LENGTH_LONG)
+                }
+            }
         }
     }
 

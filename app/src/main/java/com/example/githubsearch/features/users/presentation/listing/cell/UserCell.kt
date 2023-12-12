@@ -7,7 +7,7 @@ import com.example.githubsearch.databinding.RecyclerViewCellUsersBinding
 import com.example.githubsearch.features.users.domain.entities.UserBasicEntity
 import io.github.enicolas.genericadapter.adapter.BaseCell
 
-class UserCell(var binding: RecyclerViewCellUsersBinding) : BaseCell(binding.root) {
+class UserCell(private var binding: RecyclerViewCellUsersBinding) : BaseCell(binding.root) {
 
     fun set(user: UserBasicEntity) {
         binding.txtUserName.text = user.name ?: user.userName

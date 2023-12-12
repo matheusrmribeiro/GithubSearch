@@ -4,7 +4,7 @@ import com.example.githubsearch.databinding.RecyclerViewCellRepositoryBinding
 import com.example.githubsearch.features.users.domain.entities.UserRepositoryEntity
 import io.github.enicolas.genericadapter.adapter.BaseCell
 
-class RepositoryCell(var binding: RecyclerViewCellRepositoryBinding) : BaseCell(binding.root) {
+class RepositoryCell(private var binding: RecyclerViewCellRepositoryBinding) : BaseCell(binding.root) {
 
     fun set(repository: UserRepositoryEntity) {
         binding.txtRepositoryName.text = repository.name
