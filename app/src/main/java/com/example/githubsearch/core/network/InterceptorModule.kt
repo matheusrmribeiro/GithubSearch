@@ -2,8 +2,8 @@ package com.example.githubsearch.core.network
 
 
 import android.os.Build
+import com.example.githubsearch.BaseApplication
 import com.example.githubsearch.BuildConfig
-import com.example.githubsearch.CoreApplication
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,8 +34,7 @@ class InterceptorModule {
         return Interceptor { chain ->
             val request = chain.request()
             val userAgent = StringBuilder("Android ").append(Build.VERSION.SDK_INT).toString()
-            val appName =
-                CoreApplication.instance.applicationInfo.loadLabel(CoreApplication.instance.packageManager)
+            val appName = BaseApplication.instance.applicationInfo.loadLabel(BaseApplication.instance.packageManager)
                     .toString()
 
             val newRequest = request.newBuilder()

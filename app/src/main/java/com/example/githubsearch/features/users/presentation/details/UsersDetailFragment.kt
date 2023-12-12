@@ -29,7 +29,6 @@ import io.github.enicolas.genericadapter.diffable.Snapshot
 import koleton.api.hideSkeleton
 import koleton.api.loadSkeleton
 
-
 @AndroidEntryPoint
 class UsersDetailFragment : BaseFragment<FragmentUsersDetailBinding>() {
 
