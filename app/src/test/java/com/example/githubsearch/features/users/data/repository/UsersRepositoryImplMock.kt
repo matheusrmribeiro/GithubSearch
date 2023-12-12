@@ -11,14 +11,24 @@ class UsersRepositoryImplMock() : IUsersRepository {
     override suspend fun getUsers(query: String?): ResponseWrapper<List<UserBasicEntity>> {
         return if (isSuccess)
             ResponseWrapper.Success(
-                listOf(
-                    UserBasicEntity(
-                        name = "Matheus Miranda",
-                        userName = "matheusrmribeiro",
-                        picture = "https://url",
-                        bio = "Android developer"
+                if (query == "Nadir Ribeiro")
+                    listOf(
+                        UserBasicEntity(
+                            name = "Nadir Ribeiro",
+                            userName = "nadribeiro",
+                            picture = "https://url",
+                            bio = "Fullstack developer"
+                        )
                     )
-                )
+                else
+                    listOf(
+                        UserBasicEntity(
+                            name = "Matheus Miranda",
+                            userName = "matheusrmribeiro",
+                            picture = "https://url",
+                            bio = "Android developer"
+                        )
+                    )
             )
         else
             ResponseWrapper.Error(0)
