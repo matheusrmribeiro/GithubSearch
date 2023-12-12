@@ -35,5 +35,4 @@ class UsersDetailViewModel @Inject constructor(
         .onStart { emit(ViewState.Loading) }
         .asLiveData()
 
-
 }
