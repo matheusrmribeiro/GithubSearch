@@ -13,7 +13,7 @@ interface IUsersRemoteDataSource {
      *
      * @return A list containing the basic information from all the returned users
      */
-    suspend fun getUsers(query: String?) : ResponseWrapper<List<UserBasicResponse>>
+    suspend fun getUsers(query: String? = null) : ResponseWrapper<List<UserBasicResponse>>
 
     /**
      * Get the user according the given User Name.

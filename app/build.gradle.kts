@@ -20,7 +20,9 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "org.junit.runners.JUnit4"
+        testInstrumentationRunnerArguments["runnerBuilder"] =
+            "de.mannodermaus.junit5.AndroidJUnit5Builder"
     }
 
     buildTypes {
@@ -59,6 +61,7 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
     implementation("io.coil-kt:coil:2.5.0")
+    implementation("androidx.test:core:1.5.0")
     kapt("com.google.dagger:hilt-android-compiler:2.49")
     implementation("com.google.dagger:hilt-android:2.49")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
@@ -72,12 +75,18 @@ dependencies {
     implementation("com.facebook.shimmer:shimmer:0.5.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    // Coroutine Lifecycle Scopes
 
+    // Tests
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.mockito:mockito-core:5.8.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+    testImplementation("io.mockk:mockk:1.13.8")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0-RC")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
 
 kapt {
     correctErrorTypes = true
