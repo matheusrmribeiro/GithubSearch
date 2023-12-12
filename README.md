@@ -25,5 +25,9 @@ To install Android Studio follow these steps  [Install Android Studio](https://d
 
 **ATTENTION:** This application only runs on Android M (API 26) or higher versions.
 
+To test, you can run the project and search users by name or user name.
+
+> Example: Search by "Matheus Miranda" or "matheusrmribeiro".
+
 # Preview
 <img src="https://github.com/matheusrmribeiro/GithubSearch/assets/43149218/0ff51238-ca17-4707-9da5-a4ac19ca31c0" height="250"/>
